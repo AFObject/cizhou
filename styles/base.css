@@ -1,29 +1,31 @@
 :root {
-  --bg: #fafaf7;
-  --bg-soft: #f3f0e6;
+  /* —— 主色：纯白铺底，墨色文字 —— */
+  --bg: #ffffff;
+  --bg-soft: #f5f5f0;          /* 极淡灰，仅用于 hover / tab 背景 */
   --surface: #ffffff;
-  --fg: #1a1a2e;
-  --fg-soft: #3a3a4e;
-  --muted: #7a7a8a;
-  --line: #e6e3d8;
-  --line-strong: #d4d0c0;
-
-  --accent: #c14545;
-  --accent-soft: #f7e6e6;
-  --gold: #b8893a;
-  --gold-soft: #f5ecd6;
-  --green: #5a8a4a;
-  --green-soft: #e3eedb;
-
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
-
+  --fg: #14141c;               /* 接近纯黑的墨色，对比度 16:1 */
+  --fg-soft: #3a3a48;
+  --muted: #8a8a98;
+  --line: #ececec;
+  --line-strong: #d8d8d8;
+  /* —— 点缀色：朱砂红 + 古铜金 + 松绿 —— */
+  --accent: #b8443a;           /* 比之前更沉稳的朱红 */
+  --accent-soft: #fbeeec;
+  --gold: #9a7a3a;
+  --gold-soft: #f5efde;
+  --green: #4e7a4a;
+  --green-soft: #e6efe1;
+  --shadow-sm: 0 1px 2px rgba(20,20,30,.04), 0 1px 3px rgba(20,20,30,.04);
+  --shadow-md: 0 6px 20px rgba(20,20,30,.06), 0 2px 6px rgba(20,20,30,.04);
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-
-  --serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", serif;
-  --sans: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  /* —— 字体栈 —— */
+  --serif: "Source Serif 4", "Source Serif Pro",
+           "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif CJK SC",
+           Georgia, serif;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont,
+           "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,11 +56,14 @@ html, body {
   margin: 0; padding: 0;
   height: 100%;
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 15.5px;           /* ← 改 */
+  line-height: 1.55;            /* ← 新增 */
   color: var(--fg);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  font-feature-settings: "ss01", "cv11";  /* Inter 的语境化字形微调 */
 }
 body { overflow: hidden; }
 

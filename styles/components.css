@@ -300,3 +300,148 @@
   .quiz-example { font-size: 18px; }
   .setup-row { grid-template-columns: 60px 1fr; }
 }
+/* ===== 视觉精修 ===== */
+
+/* 词条字号略大、字距更舒展 */
+.detail-char {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* 卡片更轻，靠分隔线而非边框 */
+.sense-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  box-shadow: none;
+  transition: border-color .15s, background .15s;
+}
+.sense-card:hover {
+  border-color: var(--line-strong);
+  background: #fafafa;
+}
+
+/* 例句更优雅 */
+.sense-example {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--fg);
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  margin: 8px 0 6px;
+}
+
+/* 出处用斜体衬线（Source Serif 的 italic 很漂亮）*/
+.sense-source, .quiz-source {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* 顶栏更精致 */
+.topbar {
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.brand-mark {
+  background: var(--fg);
+  color: #fff;
+  font-family: var(--serif);
+}
+.brand-text { letter-spacing: 0.02em; }
+
+/* tab 更克制 */
+.tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.tab.active {
+  color: var(--fg);
+  background: var(--bg-soft);
+}
+
+/* 背诵卡片：去掉米黄阴影感，改用细线 + 大留白 */
+.quiz-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  padding: 56px 56px;
+  border-radius: 18px;
+}
+.quiz-word {
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 600;
+  color: var(--fg);             /* 改：从朱红→墨色，降低视觉噪音 */
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.quiz-example {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.8;
+  color: var(--fg);
+}
+.quiz-example .hl {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-weight: 600;
+}
+.quiz-answer {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--fg-soft);
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 24px;
+}
+
+/* 按钮：主按钮深墨色，hover 微动 */
+.btn-primary {
+  background: var(--fg);
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.btn-judge {
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 12px;
+}
+
+/* 词条列表项更紧致 */
+.entry-item .e-char {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+}
+.entry-item.active {
+  background: var(--bg-soft);
+  border-left-color: var(--accent);
+}
+
+/* 搜索框聚焦更明显 */
+.search-wrap input {
+  background: var(--bg-soft);
+  border: 1px solid transparent;
+}
+.search-wrap input:focus {
+  background: var(--surface);
+  border-color: var(--fg);
+}
+
+/* sub-title 更精致 */
+.sub-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+}
