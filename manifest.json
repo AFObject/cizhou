@@ -1,0 +1,17 @@
+{
+  "name": "辞舟 实词背诵",
+  "short_name": "辞舟",
+  "description": "高中实词记忆与背诵系统",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
