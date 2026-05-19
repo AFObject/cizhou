@@ -152,7 +152,7 @@ App.quiz = (function () {
       共测 <b>${total}</b> 题<br/>
       正确 <b style="color:var(--green)">${rounds.right}</b> ·
       不会 <b style="color:var(--accent)">${rounds.wrong}</b> ·
-      不确定 <b style="color:var(--gold)">${rounds.unsure}</b><br/>
+      难说 <b style="color:var(--gold)">${rounds.unsure}</b><br/>
       正确率 <b>${pct}%</b>
     `;
   }
