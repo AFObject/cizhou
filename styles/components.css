@@ -445,3 +445,65 @@
   border-left: 3px solid var(--accent);
   padding-left: 14px;
 }
+
+/* ========== 云同步 UI ========== */
+.sync-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: background .2s;
+}
+.sync-dot.status-synced     { background: var(--green); }
+.sync-dot.status-syncing    { background: var(--gold); animation: pulse 1.2s ease-in-out infinite; }
+.sync-dot.status-connecting { background: var(--gold); animation: pulse 1.2s ease-in-out infinite; }
+.sync-dot.status-offline    { background: var(--muted); }
+.sync-dot.status-error      { background: var(--accent); }
+.sync-dot.status-idle       { background: transparent; border: 1px solid var(--line-strong); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.sync-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+.sync-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sync-status {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 8px;
+}
+.sync-status.status-synced   { color: var(--green); }
+.sync-status.status-syncing  { color: var(--gold); }
+.sync-status.status-offline  { color: var(--muted); }
+.sync-status.status-error    { color: var(--accent); }
+.sync-desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.sync-user {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.sync-uid {
+  color: var(--muted); font-size: 12px;
+  margin-left: 8px; font-family: monospace;
+}
+.sync-meta { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+.sync-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }

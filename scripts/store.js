@@ -4,10 +4,9 @@ window.App = window.App || {};
 App.store = (function () {
   const KEY = 'cizhou.progress.v1';
 
-  // 内存里维护一份，写时合并
   let state = {
-    tags: {},   // { sid: 'important' | 'rare' | 'mastered' }
-    stats: {},  // { sid: { right, wrong, unsure, lastReview } }
+    tags: {},
+    stats: {},
     meta: { createdAt: new Date().toISOString() }
   };
 
@@ -38,11 +37,14 @@ App.store = (function () {
     if (!tag) delete state.tags[sid];
     else state.tags[sid] = tag;
     save();
+    if (App.sync && App.sync.isEnabled()) App.sync.pushTag(sid, tag || null);
   }
   function toggleTag(sid, tag) {
-    if (state.tags[sid] === tag) delete state.tags[sid];
-    else state.tags[sid] = tag;
+    let newTag;
+    if (state.tags[sid] === tag) { delete state.tags[sid]; newTag = null; }
+    else { state.tags[sid] = tag; newTag = tag; }
     save();
+    if (App.sync && App.sync.isEnabled()) App.sync.pushTag(sid, newTag);
   }
 
   function getStat(sid) {
@@ -56,6 +58,7 @@ App.store = (function () {
     s.lastReview = App.utils.todayISO();
     state.stats[sid] = s;
     save();
+    if (App.sync && App.sync.isEnabled()) App.sync.pushJudge(sid, judge);
   }
 
   function exportAll() {
@@ -74,6 +77,7 @@ App.store = (function () {
       state.stats = obj.stats || {};
       state.meta.importedAt = new Date().toISOString();
       save();
+      if (App.sync && App.sync.isEnabled()) App.sync.pushFullSnapshot();
       return true;
     }
     throw new Error('文件格式不正确');
@@ -82,15 +86,24 @@ App.store = (function () {
   function resetAll() {
     state = { tags: {}, stats: {}, meta: { createdAt: new Date().toISOString() } };
     save();
+    if (App.sync && App.sync.isEnabled()) App.sync.pushResetAll();
   }
 
   function snapshot() { return state; }
+
+  // 仅供 App.sync 在远程合并后注入；不会触发再次推送
+  function _setRaw(newState) {
+    state.tags = newState.tags || {};
+    state.stats = newState.stats || {};
+    if (newState.meta) state.meta = newState.meta;
+    save();
+  }
 
   return {
     load, save,
     getTag, setTag, toggleTag,
     getStat, recordJudge,
     exportAll, importAll, resetAll,
-    snapshot,
+    snapshot, _setRaw,
   };
 })();

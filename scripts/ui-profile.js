@@ -1,4 +1,4 @@
-// ============ 我的：统计 / 导入导出 ============
+// ============ 我的：统计 / 导入导出 / 云同步 ============
 window.App = window.App || {};
 
 App.profile = (function () {
@@ -20,7 +20,7 @@ App.profile = (function () {
         App.store.importAll(text);
         toast('导入成功');
         render();
-        if (App.browse && App.browse.init) App.browse.init();
+        if (App.browse && App.browse.refresh) App.browse.refresh();
       } catch (err) {
         alert('导入失败：' + err.message);
       }
@@ -32,10 +32,85 @@ App.profile = (function () {
       App.store.resetAll();
       toast('已重置');
       render();
+      if (App.browse && App.browse.refresh) App.browse.refresh();
     });
+
+    // 云同步按钮事件（按钮在 render 时动态生成）
+    on(document, 'click', (e) => {
+      if (e.target.id === 'signInGoogleBtn') App.sync.signInWithGoogle();
+      else if (e.target.id === 'signInAnonBtn') App.sync.signInAnonymously();
+      else if (e.target.id === 'signOutBtn') {
+        if (confirm('退出登录后将停止云同步（本地数据保留）。继续？')) App.sync.signOut();
+      }
+    });
+
+    // 订阅同步状态变化，自动刷新 UI
+    if (App.sync) {
+      App.sync.onStatusChange(() => {
+        renderSyncSection();
+        renderTopbarIndicator();
+      });
+    }
   }
 
   function render() {
+    renderSyncSection();
+    renderStats();
+  }
+
+  function renderSyncSection() {
+    const wrap = $('#syncSection');
+    if (!wrap) return;
+    const s = App.sync ? App.sync.getState() : { enabled: false, status: 'idle' };
+
+    if (!s.enabled || !s.user) {
+      wrap.innerHTML = `
+        <div class="sync-card">
+          <div class="sync-title">☁️ 云同步</div>
+          <div class="sync-desc">登录后，进度将在所有设备之间实时同步。</div>
+          <div class="sync-actions">
+            <button class="btn-primary" id="signInGoogleBtn">用 Google 账号登录</button>
+            <button class="btn-ghost" id="signInAnonBtn">匿名使用（不推荐）</button>
+          </div>
+        </div>
+      `;
+    } else {
+      const u = s.user;
+      const statusLabel = {
+        synced: '已同步',
+        syncing: '同步中…',
+        connecting: '连接中…',
+        offline: '离线（恢复网络后自动同步）',
+        error: '错误：' + (s.error || ''),
+        idle: '空闲',
+      }[s.status] || s.status;
+
+      wrap.innerHTML = `
+        <div class="sync-card">
+          <div class="sync-title">☁️ 云同步 <span class="sync-status status-${s.status}">● ${statusLabel}</span></div>
+          <div class="sync-user">
+            ${u.isAnonymous ? '匿名用户' : escapeHtml(u.email || u.name)}
+            <span class="sync-uid">uid: ${u.uid.slice(0, 8)}…</span>
+          </div>
+          ${s.lastSyncedAt ? `<div class="sync-meta">上次同步：${formatTime(s.lastSyncedAt)}</div>` : ''}
+          <div class="sync-actions">
+            <button class="btn-ghost" id="signOutBtn">退出登录</button>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  function formatTime(ts) {
+    const diff = (Date.now() - ts) / 1000;
+    if (diff < 5) return '刚刚';
+    if (diff < 60) return Math.floor(diff) + ' 秒前';
+    if (diff < 3600) return Math.floor(diff / 60) + ' 分钟前';
+    const d = new Date(ts);
+    return d.toLocaleString();
+  }
+
+  function renderStats() {
     const snap = App.store.snapshot();
     const senses = App.data.listAllSenses();
 
@@ -56,9 +131,7 @@ App.profile = (function () {
         totalRight += (st.right || 0);
         totalWrong += (st.wrong || 0);
         const score = (st.wrong || 0) * 2 + (st.unsure || 0) - (st.right || 0) * 0.5;
-        if (score > 0) {
-          weak.push({ sense: s, st, score });
-        }
+        if (score > 0) weak.push({ sense: s, st, score });
       }
     }
 
@@ -90,6 +163,14 @@ App.profile = (function () {
     $$('.weak-row', $('#weakList')).forEach(el => {
       on(el, 'click', () => App.browse.focusEntry(Number(el.dataset.id)));
     });
+  }
+
+  function renderTopbarIndicator() {
+    const el = $('#syncDot');
+    if (!el) return;
+    const s = App.sync ? App.sync.getState() : { status: 'idle' };
+    el.className = 'sync-dot status-' + s.status;
+    el.title = '同步状态：' + s.status;
   }
 
   return { init, render };

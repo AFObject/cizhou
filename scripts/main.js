@@ -25,29 +25,24 @@ App.tabs = (function () {
     await App.data.load();
 
     const n = App.data.listEntries().length;
-    document.getElementById('topbarStatus').textContent = `共 ${n} 词条 · 本地存储`;
+    document.getElementById('topbarStatus').textContent = `共 ${n} 词条`;
 
     App.tabs.init();
     App.browse.init();
     App.quiz.init();
     App.profile.init();
 
-    // 默认展示第一个词条
+    // 启动云同步（异步，不阻塞 UI）
+    if (App.sync) App.sync.init();
+
     if (n > 0) App.browse.showEntry(App.data.listEntries()[0].id);
 
-    // 注册 service worker（可选，纯展示效果）
-    // 这里不强制，避免缓存问题
   } catch (e) {
     console.error(e);
     document.getElementById('main').innerHTML =
       `<div class="empty">
         <h2>加载失败</h2>
         <p>${e.message}</p>
-        <p class="hint">
-          如果你看到的是 fetch 错误，说明你直接双击了 index.html。请二选一：<br/>
-          ① 在项目目录运行 <code>python3 -m http.server 8000</code>，访问 http://localhost:8000<br/>
-          ② 把 data.json 转成 scripts/data-embed.js（见 README）
-        </p>
       </div>`;
   }
 })();

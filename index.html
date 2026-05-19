@@ -1,173 +1,182 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#1a1a2e" />
-<title>辞舟 · 实词背诵</title>
-<link rel="manifest" href="manifest.json" />
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="assets/favicon.svg" />
-<link rel="stylesheet" href="styles/base.css" />
-<link rel="stylesheet" href="styles/layout.css" />
-<link rel="stylesheet" href="styles/components.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>辞舟 · 实词背诵</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <span class="brand-mark">辞</span>
-    <span class="brand-text">辞舟<small>实词背诵</small></span>
-  </div>
-  <nav class="tabs" id="tabs">
-    <button class="tab active" data-tab="browse">浏览</button>
-    <button class="tab" data-tab="quiz">背诵</button>
-    <button class="tab" data-tab="profile">我的</button>
-  </nav>
-  <div class="topbar-status" id="topbarStatus"></div>
-</header>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">辞</span>
+      <span class="brand-text">辞舟<small>实词背诵</small></span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="browse">浏览</button>
+      <button class="tab" data-tab="quiz">背诵</button>
+      <button class="tab" data-tab="profile">我的</button>
+    </nav>
+    <div class="topbar-status">
+      <span class="sync-dot" id="syncDot" title="未登录"></span>
+      <span id="topbarStatus"></span>
+    </div>
+  </header>
 
-<main id="main">
-  <!-- ============ 浏览视图 ============ -->
-  <section class="view view-browse active" data-view="browse">
-    <aside class="side">
-      <div class="search-wrap">
-        <input id="searchInput" type="search" placeholder="搜索字 / 释义 / 例句 / 出处..." autocomplete="off"/>
-        <div class="search-meta" id="searchMeta"></div>
-      </div>
-      <div class="filter-row">
-        <label><input type="checkbox" id="filterImportant"/> 重点</label>
-        <label><input type="checkbox" id="filterRare"/> 生僻</label>
-        <label><input type="checkbox" id="filterMastered"/> 已掌握</label>
-      </div>
-      <div class="entry-list" id="entryList"></div>
-    </aside>
-    <section class="detail" id="detail">
-      <div class="empty">← 在左侧选择一个实词</div>
+  <main id="main">
+    <!-- ============ 浏览视图 ============ -->
+    <section class="view view-browse active" data-view="browse">
+      <aside class="side">
+        <div class="search-wrap">
+          <input id="searchInput" type="search" placeholder="搜索字 / 释义 / 例句 / 出处..." autocomplete="off" />
+          <div class="search-meta" id="searchMeta"></div>
+        </div>
+        <div class="filter-row">
+          <label><input type="checkbox" id="filterImportant" /> 重点</label>
+          <label><input type="checkbox" id="filterRare" /> 生僻</label>
+          <label><input type="checkbox" id="filterMastered" /> 已掌握</label>
+        </div>
+        <div class="entry-list" id="entryList"></div>
+      </aside>
+      <section class="detail" id="detail">
+        <div class="empty">← 在左侧选择一个实词</div>
+      </section>
     </section>
-  </section>
 
-  <!-- ============ 背诵视图 ============ -->
-  <section class="view view-quiz" data-view="quiz">
-    <div class="quiz-setup" id="quizSetup">
-      <h2>开始背诵</h2>
+    <!-- ============ 背诵视图 ============ -->
+    <section class="view view-quiz" data-view="quiz">
+      <div class="quiz-setup" id="quizSetup">
+        <h2>开始背诵</h2>
 
-      <div class="setup-row">
-        <label>范围</label>
-        <div class="range-inputs">
-          <input type="number" id="rangeFrom" min="1" max="616" value="1"/>
-          <span>—</span>
-          <input type="number" id="rangeTo" min="1" max="616" value="616"/>
-          <button class="btn-link" id="rangeAll">全部</button>
+        <div class="setup-row">
+          <label>范围</label>
+          <div class="range-inputs">
+            <input type="number" id="rangeFrom" min="1" max="616" value="1" />
+            <span>—</span>
+            <input type="number" id="rangeTo" min="1" max="616" value="616" />
+            <button class="btn-link" id="rangeAll">全部</button>
+          </div>
+        </div>
+
+        <div class="setup-row">
+          <label>顺序</label>
+          <div class="seg" id="orderSeg">
+            <button class="seg-btn active" data-order="sequential">顺序</button>
+            <button class="seg-btn" data-order="random">随机</button>
+          </div>
+        </div>
+
+        <div class="setup-row">
+          <label>筛选</label>
+          <div class="checklist">
+            <label><input type="checkbox" id="quizImportant" /> 仅重点</label>
+            <label><input type="checkbox" id="quizWrong" /> 仅错题</label>
+            <label><input type="checkbox" id="quizExcludeMastered" checked /> 排除已掌握</label>
+            <label><input type="checkbox" id="quizExcludeRare" checked /> 排除生僻</label>
+            <label><input type="checkbox" id="quizExcludeNote" checked /> 排除说明性条目</label>
+            <label><input type="checkbox" id="quizRequireExample" checked /> 仅含例句</label>
+          </div>
+        </div>
+
+        <div class="setup-row">
+          <label>预计</label>
+          <div class="setup-meta" id="quizPreview">—</div>
+        </div>
+
+        <div class="setup-actions">
+          <button class="btn-primary" id="quizStart">开始 →</button>
         </div>
       </div>
 
-      <div class="setup-row">
-        <label>顺序</label>
-        <div class="seg" id="orderSeg">
-          <button class="seg-btn active" data-order="sequential">顺序</button>
-          <button class="seg-btn" data-order="random">随机</button>
-        </div>
-      </div>
-
-      <div class="setup-row">
-        <label>筛选</label>
-        <div class="checklist">
-          <label><input type="checkbox" id="quizImportant"/> 仅重点</label>
-          <label><input type="checkbox" id="quizWrong"/> 仅错题</label>
-          <label><input type="checkbox" id="quizExcludeMastered" checked/> 排除已掌握</label>
-          <label><input type="checkbox" id="quizExcludeRare" checked/> 排除生僻</label>
-          <label><input type="checkbox" id="quizExcludeNote" checked/> 排除说明性条目</label>
-          <label><input type="checkbox" id="quizRequireExample" checked/> 仅含例句</label>
-        </div>
-      </div>
-
-      <div class="setup-row">
-        <label>预计</label>
-        <div class="setup-meta" id="quizPreview">—</div>
-      </div>
-
-      <div class="setup-actions">
-        <button class="btn-primary" id="quizStart">开始 →</button>
-      </div>
-    </div>
-
-    <div class="quiz-runner" id="quizRunner" hidden>
-      <div class="quiz-topbar">
-        <button class="btn-ghost" id="quizExit">← 退出</button>
-        <div class="quiz-progress" id="quizProgress"></div>
-        <button class="btn-ghost" id="quizShuffle">↻ 重排</button>
-      </div>
-
-      <div class="card-stage">
-        <div class="quiz-card" id="quizCard">
-          <div class="quiz-word" id="quizWord"></div>
-          <div class="quiz-example" id="quizExample"></div>
-          <div class="quiz-source" id="quizSource"></div>
-          <div class="quiz-answer" id="quizAnswer" hidden></div>
+      <div class="quiz-runner" id="quizRunner" hidden>
+        <div class="quiz-topbar">
+          <button class="btn-ghost" id="quizExit">← 退出</button>
+          <div class="quiz-progress" id="quizProgress"></div>
+          <button class="btn-ghost" id="quizShuffle">↻ 重排</button>
         </div>
 
-        <div class="quiz-actions" id="quizActions">
-          <button class="btn-primary big" id="quizReveal">显示答案</button>
+        <div class="card-stage">
+          <div class="quiz-card" id="quizCard">
+            <div class="quiz-word" id="quizWord"></div>
+            <div class="quiz-example" id="quizExample"></div>
+            <div class="quiz-source" id="quizSource"></div>
+            <div class="quiz-answer" id="quizAnswer" hidden></div>
+          </div>
+
+          <div class="quiz-actions" id="quizActions">
+            <button class="btn-primary big" id="quizReveal">显示答案</button>
+          </div>
+          <div class="quiz-actions-after" id="quizActionsAfter" hidden>
+            <button class="btn-judge wrong" data-judge="wrong">❌ 不会</button>
+            <button class="btn-judge unsure" data-judge="unsure">🤔 不确定</button>
+            <button class="btn-judge right" data-judge="right">✅ 会</button>
+          </div>
         </div>
-        <div class="quiz-actions-after" id="quizActionsAfter" hidden>
-          <button class="btn-judge wrong"  data-judge="wrong">❌ 不会</button>
-          <button class="btn-judge unsure" data-judge="unsure">🤔 不确定</button>
-          <button class="btn-judge right"  data-judge="right">✅ 会</button>
+
+        <div class="quiz-finish" id="quizFinish" hidden>
+          <h2>本轮完成 🎉</h2>
+          <div class="finish-stats" id="finishStats"></div>
+          <div class="finish-actions">
+            <button class="btn-ghost" id="finishAgain">再来一轮</button>
+            <button class="btn-primary" id="finishBack">返回</button>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="quiz-finish" id="quizFinish" hidden>
-        <h2>本轮完成 🎉</h2>
-        <div class="finish-stats" id="finishStats"></div>
-        <div class="finish-actions">
-          <button class="btn-ghost" id="finishAgain">再来一轮</button>
-          <button class="btn-primary" id="finishBack">返回</button>
+    <!-- ============ 我的视图 ============ -->
+    <section class="view view-profile" data-view="profile">
+      <div class="profile-wrap">
+        <div id="syncSection"></div>
+        <h2>学习统计</h2>
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <h2>薄弱实词 Top 20</h2>
+        <div class="weak-list" id="weakList"></div>
+
+<h2>本地导入导出</h2>
+<p class="hint">用于备份或在未联网设备间手动迁移。日常使用建议直接用云同步。</p><div class="profile-actions">
+          <button class="btn-primary" id="exportBtn">导出进度 JSON</button>
+          <label class="btn-ghost file-label">
+            导入进度 JSON
+            <input type="file" id="importInput" accept=".json" hidden />
+          </label>
+          <button class="btn-danger" id="resetBtn">重置全部进度</button>
         </div>
+
+        <h2>关于</h2>
+        <p class="hint">辞舟 · 一叶扁舟，渡尽辞海。<br />本地版 v0.1</p>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- ============ 我的视图 ============ -->
-  <section class="view view-profile" data-view="profile">
-    <div class="profile-wrap">
-      <h2>学习统计</h2>
-      <div class="stats-grid" id="statsGrid"></div>
+  <div id="toast" class="toast" hidden></div>
 
-      <h2>薄弱实词 Top 20</h2>
-      <div class="weak-list" id="weakList"></div>
-
-      <h2>数据同步</h2>
-      <p class="hint">辞舟将进度保存在浏览器本地。在多设备之间同步时，请用导出 / 导入。</p>
-      <div class="profile-actions">
-        <button class="btn-primary" id="exportBtn">导出进度 JSON</button>
-        <label class="btn-ghost file-label">
-          导入进度 JSON
-          <input type="file" id="importInput" accept=".json" hidden/>
-        </label>
-        <button class="btn-danger" id="resetBtn">重置全部进度</button>
-      </div>
-
-      <h2>关于</h2>
-      <p class="hint">辞舟 · 一叶扁舟，渡尽辞海。<br/>本地版 v0.1</p>
-    </div>
-  </section>
-</main>
-
-<div id="toast" class="toast" hidden></div>
-
-<!-- ============ 脚本加载顺序 ============ -->
+  <!-- ============ 脚本加载顺序 ============ -->
 <script src="scripts/utils.js"></script>
 <script src="scripts/store.js"></script>
 <script src="scripts/data.js"></script>
-<!-- 如果存在 data-embed.js（双击模式），它会预填 window.RAW_DATA -->
 <script src="scripts/data-embed.js" onerror="void 0"></script>
+<script src="scripts/firebase-config.js"></script>
+<script src="scripts/sync.js"></script>
 <script src="scripts/ui-browse.js"></script>
 <script src="scripts/ui-quiz.js"></script>
 <script src="scripts/ui-profile.js"></script>
 <script src="scripts/main.js"></script>
 </body>
+
 </html>

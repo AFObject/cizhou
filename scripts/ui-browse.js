@@ -33,9 +33,9 @@ App.browse = (function () {
     if (!onlyImp && !onlyRare && !onlyMast) return true;
 
     const senses = collectSenses(entry);
-    if (onlyImp  && senses.some(s => App.store.getTag(s.sid) === 'important')) return true;
-    if (onlyRare && senses.some(s => App.store.getTag(s.sid) === 'rare'))      return true;
-    if (onlyMast && senses.some(s => App.store.getTag(s.sid) === 'mastered'))  return true;
+    if (onlyImp && senses.some(s => App.store.getTag(s.sid) === 'important')) return true;
+    if (onlyRare && senses.some(s => App.store.getTag(s.sid) === 'rare')) return true;
+    if (onlyMast && senses.some(s => App.store.getTag(s.sid) === 'mastered')) return true;
     return false;
   }
 
@@ -64,7 +64,7 @@ App.browse = (function () {
       if (currentSearch && !currentSearch.entryIds.has(ent.id)) continue;
       if (!passesFilter(ent)) continue;
       const flags = entryFlags(ent);
-      const flagsHtml = ['important','wrong','rare','mastered']
+      const flagsHtml = ['important', 'wrong', 'rare', 'mastered']
         .filter(f => flags.has(f))
         .map(f => `<span class="flag-dot ${f}" title="${f}"></span>`)
         .join('');
@@ -101,9 +101,8 @@ App.browse = (function () {
     if (tag) classes.push('tag-' + tag, 'has-tag');
 
     const phrasesHtml = (s.phraseKeys || []).length
-      ? `<div class="sense-phrases">${
-          s.phraseKeys.map(p => `<span class="phrase-tag">${escapeHtml(p)}</span>`).join('')
-        }</div>`
+      ? `<div class="sense-phrases">${s.phraseKeys.map(p => `<span class="phrase-tag">${escapeHtml(p)}</span>`).join('')
+      }</div>`
       : '';
     const exampleHtml = s.example
       ? `<div class="sense-example">${highlightExample(s.example, displayChars)}</div>`
@@ -123,13 +122,13 @@ App.browse = (function () {
     return `
       <div class="${classes.join(' ')}" data-sid="${s.sid}">
         <div class="sense-actions">
-          <button class="tag-btn ${tag==='important'?'active important':''}" data-tag="important" title="重点">重</button>
-          <button class="tag-btn ${tag==='rare'?'active rare':''}" data-tag="rare" title="生僻">僻</button>
-          <button class="tag-btn ${tag==='mastered'?'active mastered':''}" data-tag="mastered" title="已掌握">熟</button>
+          <button class="tag-btn ${tag === 'important' ? 'active important' : ''}" data-tag="important" title="重点">重</button>
+          <button class="tag-btn ${tag === 'rare' ? 'active rare' : ''}" data-tag="rare" title="生僻">僻</button>
+          <button class="tag-btn ${tag === 'mastered' ? 'active mastered' : ''}" data-tag="mastered" title="已掌握">熟</button>
         </div>
         <div class="sense-head">
           <span class="sense-label">${escapeHtml(s.label || '')}</span>
-          <span class="sense-meaning ${s.isNote?'note':''}">${escapeHtml(s.meaning || '(无释义)')}</span>
+          <span class="sense-meaning ${s.isNote ? 'note' : ''}">${escapeHtml(s.meaning || '(无释义)')}</span>
         </div>
         ${phrasesHtml}
         ${exampleHtml}
@@ -182,5 +181,14 @@ App.browse = (function () {
     showEntry(id);
   }
 
-  return { init, showEntry, focusEntry };
+  function refresh() {
+    // 远程数据合并后调用：列表 + 当前详情都重渲染
+    renderList();
+    if (currentEntryId != null) {
+      const ent = App.data.getEntry(currentEntryId);
+      if (ent) renderDetail(ent);
+    }
+  }
+
+  return { init, showEntry, focusEntry, refresh };
 })();
